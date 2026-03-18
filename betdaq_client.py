@@ -396,8 +396,33 @@ def interactive(client):
 # ── Main ────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    USERNAME = "godivaspires"
-    PASSWORD = "Beaumaris1!"
+    import os
+
+    USERNAME = os.environ.get("BETDAQ_USERNAME", "")
+    PASSWORD = os.environ.get("BETDAQ_PASSWORD", "")
+
+    if not USERNAME or not PASSWORD:
+        # Try .env file
+        env_path = os.path.join(os.path.dirname(__file__), ".env")
+        if os.path.exists(env_path):
+            with open(env_path) as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        os.environ[k.strip()] = v.strip()
+            USERNAME = os.environ.get("BETDAQ_USERNAME", "")
+            PASSWORD = os.environ.get("BETDAQ_PASSWORD", "")
+
+    if not USERNAME or not PASSWORD:
+        print("Set your credentials via environment variables or .env file:")
+        print("  export BETDAQ_USERNAME=your_username")
+        print("  export BETDAQ_PASSWORD=your_password")
+        print()
+        print("Or create a .env file with:")
+        print("  BETDAQ_USERNAME=your_username")
+        print("  BETDAQ_PASSWORD=your_password")
+        sys.exit(1)
 
     client = BetdaqClient(USERNAME, PASSWORD)
 

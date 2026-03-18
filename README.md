@@ -6,6 +6,10 @@ Python client for the Betdaq betting exchange API. Connects via the same vendor 
 
 ```bash
 pip install -r requirements.txt
+
+# Copy the example env file and add your Betdaq credentials
+cp .env.example .env
+# Edit .env with your username and password
 ```
 
 ## Quick Start
@@ -19,6 +23,12 @@ python betdaq_client.py --interactive
 
 # Run examples
 python examples.py
+```
+
+Credentials can be set via `.env` file or environment variables:
+```bash
+export BETDAQ_USERNAME=your_username
+export BETDAQ_PASSWORD=your_password
 ```
 
 ## Usage as a Library
